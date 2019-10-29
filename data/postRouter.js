@@ -24,7 +24,7 @@ router.post("", (req, res) => {
         });
       }
     })
-    .catch(error => {
+    .catch(() => {
       res.status(500).json({
         error: "There was an error while saving the post to the database"
       });
@@ -33,8 +33,9 @@ router.post("", (req, res) => {
 
 router.post("/:id/comments", (req, res) => {
   const { id } = req.params;
-  text = req.body.text;
   const { newComment } = req.body;
+  text = req.body.text;
+
 
   Posts.findById(id)
     .then(data => {
@@ -55,7 +56,7 @@ router.post("/:id/comments", (req, res) => {
         data: data.push(newComment)
       });
     })
-    .catch(error => {
+    .catch(() => {
       res.status(500).json({
         error: "There was an error while saving the comment to the database"
       });
@@ -69,7 +70,7 @@ router.get("", (req, res) => {
         posts
       });
     })
-    .catch(error => {
+    .catch(() => {
       res.status(500).json({
         error: "The posts information could not be retrieved."
       });
@@ -77,7 +78,24 @@ router.get("", (req, res) => {
 });
 
 router.get("/:id", (req, res) => {
-  Posts.findById().then(post => {});
+  const { id } = req.params;
+  Posts.findById(id)
+    .then(post => {
+      if (!post) {
+        res.status(404).json({
+          message: "The post with the specified ID does not exist."
+        });
+      } else {
+        res.status(201).json({
+          post
+        });
+      }
+    })
+    .catch(() => {
+      res.status(500).json({
+        error: "The post information could not be retrieved."
+      });
+    });
 });
 
 module.exports = router;
