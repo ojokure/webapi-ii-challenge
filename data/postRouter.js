@@ -34,6 +34,7 @@ router.post("", (req, res) => {
 router.post("/:id/comments", (req, res) => {
   const { id } = req.params;
   text = req.body.text;
+  const { newComment } = req.body;
 
   Posts.findById(id)
     .then(data => {
@@ -51,7 +52,7 @@ router.post("/:id/comments", (req, res) => {
     })
     .then(data => {
       res.status(201).json({
-        data: data[0]
+        data: data.push(newComment)
       });
     })
     .catch(error => {
@@ -73,6 +74,10 @@ router.get("", (req, res) => {
         error: "The posts information could not be retrieved."
       });
     });
+});
+
+router.get("/:id", (req, res) => {
+  Posts.findById().then(post => {});
 });
 
 module.exports = router;
