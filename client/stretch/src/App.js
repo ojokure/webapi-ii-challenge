@@ -13,19 +13,20 @@ function App() {
         setPosts(res.data);
       })
       .catch(err => {
-        alert(err.message);
+        console.log(err);
       });
   }, []);
   return (
     <div className="App">
       <header className="App-header">
         <div>
-          {posts && posts.map(post => (
-            <div>
-              <div>{post.title}</div>
-              <div>{post.contents}</div>
-            </div>
-          ))}
+          {
+            posts.map(post => (
+              <div key={post.id}>
+                <div>{post.title}</div>
+                <div>{post.contents}</div>
+              </div>
+            ))}
         </div>
       </header>
     </div>
