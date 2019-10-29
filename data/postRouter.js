@@ -36,7 +36,6 @@ router.post("/:id/comments", (req, res) => {
   const { newComment } = req.body;
   text = req.body.text;
 
-
   Posts.findById(id)
     .then(data => {
       if (!data) {
@@ -98,6 +97,25 @@ router.get("/:id", (req, res) => {
     });
 });
 
+router.get("/:id/comments", (req, res) => {
+  const { id } = req.params;
 
-
+  Posts.findById(id)
+    .then(post => {
+      if (!post) {
+        res.status(404).json({
+          message: "The post with the specified ID does not exist."
+        });
+      } else {
+        res.status(201).json({
+          post
+        });
+      }
+    })
+    .catch(() => {
+      res.status(500).json({
+        error: "The comments information could not be retrieved."
+      });
+    });
+});
 module.exports = router;
