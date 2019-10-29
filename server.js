@@ -10,8 +10,7 @@ server.use("/api/posts", router);
 
 server.get("/", (req, res) => {
   res.send(
-    `
-         its working`
+    `it works`
   );
 });
 
