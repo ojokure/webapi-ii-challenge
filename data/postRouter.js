@@ -41,24 +41,36 @@ router.post("/:id/comments", (req, res) => {
         res
           .status(404)
           .json({ message: "The post with the specified ID does not exist." });
-      } 
-      else if (!text) {
+      } else if (!text) {
         res
-        .status(400)
-        .json({  errorMessage: "Please provide text for the comment."  });
-      }
-       else {
+          .status(400)
+          .json({ errorMessage: "Please provide text for the comment." });
+      } else {
         return Posts.findPostComments(id);
       }
     })
     .then(data => {
       res.status(201).json({
-         data : data[0]
+        data: data[0]
       });
     })
     .catch(error => {
       res.status(500).json({
         error: "There was an error while saving the comment to the database"
+      });
+    });
+});
+
+router.get("", (req, res) => {
+  Posts.find()
+    .then(posts => {
+      res.status(201).json({
+        posts
+      });
+    })
+    .catch(error => {
+      res.status(500).json({
+        error: "The posts information could not be retrieved."
       });
     });
 });
